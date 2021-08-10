@@ -1,50 +1,40 @@
-#https://tkdocs.com/tutorial/firstexample.html
 from tkinter import *
 from tkinter import ttk  #this is for themed widgets more modern than older ones and support styles
+import random
+def generateElfName(*args):
 
-def calculate(*args):
-    '''
-    function to claculate the meters from feet - uses * 10000 +0.5 to remove any floating pt nonsense:
-    '''
-    try:
-        value = float(feet.get())
-        meters.set(int(0.3048 * value * 10000.0 + 0.5)/10000.0)
-    except ValueError:
-        print("error! only put in valid numbers ")
-        pass
-
+    names = ["sneezy","dopey","happy","dozy","grumpy","grumpy","arnold schwarznegger"]
+    fname = firstname.get()
+    lname = lastname.get()
+    elfname.set( fname + " " + lname + " your elfname is " + random.choice(names) )
 
 root = Tk() #start Tkinter
-root.title("Feet to Meters") #window title
-# https://stackoverflow.com/questions/54476511/setting-background-color-of-a-tkinter-ttk-frame
-# Initialize style
-s = ttk.Style()
-# Create style used by default for all Frames
-s.configure('TFrame', background='green')
-
-mainframe = ttk.Frame(root, padding="0 3 12 12")
+root.title("Get your Elf Name!") #window title
+mainframe = ttk.Frame(root)
 mainframe.grid(column=0, row=0)
-#The columnconfigure/rowconfigure bits tell Tk that the frame should expand to fill any extra space if the window is resized.
+# The columnconfigure/rowconfigure bits tell Tk that the frame should expand
+# # to fill any extra space if the window is resized.
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
 
-feet = StringVar() #flexible string type that auto updates
-feet_entry = ttk.Entry(mainframe, width=17, textvariable=feet)
-feet_entry.grid(column=2, row=1) #where to put it on the screen - note it is NOT zero indexed
+# Initialize style
+s = ttk.Style()
+# Create style used by default for all Frames
+#s.configure('TFrame', background='green')
+s.configure('TLabel', background='green', font='Century 22')
+s.configure('TButton', background='magenta', font='Century 22')
+s.configure('TEntry', background='magenta', font='Century 22') #doesnt work
 
-meters = StringVar()
-ttk.Label(mainframe, textvariable=meters).grid(column=2, row=2, sticky=(W,E)) # sticky will stick the label to the WEST and EAST
-
-ttk.Button(mainframe, text="Calculate", command=calculate).grid(column=3, row=3) # command tells TKinter what function to run
-
-ttk.Label(mainframe, text="feet", relief="groove").grid(column=3, row=1)
-ttk.Label(mainframe, text="is equivalent to").grid(column=1, row=2)
-ttk.Label(mainframe, text="meters").grid(column=3, row=2)
-
-for child in mainframe.winfo_children():
-    child.grid_configure(padx=15, pady=15) # just adds padding between the widgets
-
-feet_entry.focus() # put cursor in the entry box
-root.bind("<Return>", calculate) # bind pressing Return to the calculate function
+ttk.Label(mainframe, text="Enter First Name").grid(column=1, row=1)
+ttk.Label(mainframe, text="Enter Last Name").grid(column=1, row=2)
+firstname = StringVar() #flexible string type that auto updates
+firstname_entry = ttk.Entry(mainframe, width=17, textvariable=firstname,font='Century', 22, 'bold')
+firstname_entry.grid(column=2, row=1) # where to put it on the screen - note it is NOT zero indexed
+lastname = StringVar() #flexible string type that auto updates
+lastname_entry = ttk.Entry(mainframe, width=17, textvariable=lastname)
+lastname_entry.grid(column=2, row=2) # where to put it on the screen - note it is NOT zero indexed
+ttk.Button(mainframe, text="Generate Elf Name",command=generateElfName).grid(column=2, row=3) # command tells TKinter what function to run
+elfname = StringVar()
+ttk.Label(mainframe, textvariable=elfname,font=('Century 22'),width=50).grid(column=0, row=4, columnspan=3, sticky=(W,E)) # sticky will stick the label to the WEST and EAST
 
 root.mainloop()
